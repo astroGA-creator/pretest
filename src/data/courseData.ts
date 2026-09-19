@@ -143,7 +143,7 @@ export const series1Data: CourseData = {
   hero: {
     headlineLine1: '為什麼聽了這麼多成功經驗，',
     headlineLine2: '我依然不知道該怎麼做？',
-    date: '9/13（日）10:00–17:00',
+    date: '12/19（六）10:00–17:00',
     location: '台中｜實體小班課程',
   },
   resonance: {
@@ -264,15 +264,15 @@ export const series1Data: CourseData = {
   },
   details: {
     title: '活動資訊',
-    time: '9/13（日）10:00–17:00',
+    time: '12/19（六）10:00–17:00',
     price: 'NT$ 4,000',
-    earlyBird: '9/7 前報名，早鳥價 NT$ 3,600！',
+    earlyBird: '早鳥優惠價 NT$ 3,600 起',
     locationName: '益人咖啡－台中大道店',
     locationAddress: '407 臺中市西屯區福雅里台灣大道四段796號',
     mapQuery: '407臺中市西屯區福雅里台灣大道四段796號+益人咖啡台中大道店',
     mapEmbedUrl: 'https://maps.google.com/maps?q=407%E8%87%BA%E4%B8%AD%E5%B8%82%E8%A5%BF%E5%B1%AF%E5%8D%80%E7%A6%8F%E9%9B%85%E9%87%8C%E5%8F%B0%E7%81%A3%E5%A4%A7%E9%81%93%E5%9B%9B%E6%AE%B5796%E8%99%9F&t=&z=16&ie=UTF8&iwloc=&output=embed',
-    registrationOpen: true,
-    registerPath: '/register',
+    registrationOpen: false,
+    registerNotice: '報名尚未開放，敬請期待。',
   },
   faqs: [
     {
@@ -317,10 +317,10 @@ export const series1Data: CourseData = {
     headline1: '如果你最近，正好在思考',
     headline2: '「下一步該怎麼走」',
     body: '給自己一個下午的時間，\n放下外在的標準，\n讓占星，成為你重新閱讀自己的開始。',
-    tagDate: '9/13（日）｜ 益人咖啡－台中大道店',
-    tagPrice: '早鳥價 NT$ 3,600',
-    registrationOpen: true,
-    registerPath: '/register',
+    tagDate: '12/19（六）｜ 益人咖啡－台中大道店',
+    tagPrice: '早鳥預定中',
+    registrationOpen: false,
+    notice: '報名尚未開放，敬請期待。',
   },
 };
 
@@ -465,13 +465,13 @@ export const series2Data: CourseData = {
     title: '活動資訊',
     time: '10/17（六）10:00–17:00',
     price: 'NT$ 4,000',
-    earlyBird: '早鳥優惠價 NT$ 3,600 起',
+    earlyBird: '早鳥優惠價 NT$ 3,600 起｜早鳥優惠至 9/30',
     locationName: '益人咖啡－台中大道店',
     locationAddress: '407 臺中市西屯區福雅里台灣大道四段796號',
     mapQuery: '407 臺中市西屯區福雅里台灣大道四段796號+益人咖啡',
     mapEmbedUrl: 'https://maps.google.com/maps?q=407%E8%87%BA%E4%B8%AD%E5%B8%82%E8%A5%BF%E5%B1%AF%E5%8D%80%E7%A6%8F%E9%9B%85%E9%87%8C%E5%8F%B0%E7%81%A3%E5%A4%A7%E9%81%93%E5%9B%9B%E6%AE%B5796%E8%99%9F&t=&z=16&ie=UTF8&iwloc=&output=embed',
-    registrationOpen: false,
-    registerNotice: '報名尚未開放，敬請期待。',
+    registrationOpen: true,
+    registerPath: '/register',
   },
   faqs: [
     {
@@ -517,9 +517,9 @@ export const series2Data: CourseData = {
     headline2: '淹沒在無力感裡！',
     body: '給自己一個下午的時間，放下外在干擾，\n用占星，重新整理思考與表達方式。',
     tagDate: '10/17（六）｜ 益人咖啡－台中大道店',
-    tagPrice: '早鳥預定中',
-    registrationOpen: false,
-    notice: '報名尚未開放，敬請期待。',
+    tagPrice: '早鳥優惠至 9/30',
+    registrationOpen: true,
+    registerPath: '/register',
   },
 };
 

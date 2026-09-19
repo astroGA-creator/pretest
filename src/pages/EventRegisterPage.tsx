@@ -40,6 +40,167 @@ export const EventRegisterPage: React.FC<EventRegisterPageProps> = ({ onNavigate
       }
     }, []);
 
+        useEffect(() => {
+          const handleTallySubmit = async (event: MessageEvent) => {
+            if (typeof event.data !== 'string' || !event.data.includes('Tally.FormSubmitted')) {
+              return;
+            }
+      
+            try {
+              const message = JSON.parse(event.data);
+      
+              if (message.event !== 'Tally.FormSubmitted') {
+                return;
+              }
+      
+              const payload = message.payload;
+      
+              // 找到 Tally 的「報名費用」計算欄位
+              const calculatedField = payload?.fields?.find(
+                (field: any) =>
+                  field.type === 'CALCULATED_FIELDS' &&
+                  typeof field.title === 'string' &&
+                  field.title.includes('報名費用')
+              );
+      
+              if (!calculatedField) {
+                console.error('找不到 Tally 報名費用計算欄位');
+                return;
+              }
+      
+              const amount = Number(
+                calculatedField.answer?.value ?? calculatedField.answer?.raw
+              );
+      
+              if (!Number.isFinite(amount) || amount <= 0) {
+                console.error('Tally 報名費用不是有效金額:', calculatedField.answer);
+                return;
+              }
+      
+              console.log('Tally 最終報名費用:', amount);
+      
+              // 把 Tally 算好的價格送到我們的 Vercel 後端
+              const response = await fetch('/api/ecpay/create-order', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  amount,
+                  itemName: '人生星方向系列二｜活動報名',
+                  tradeDesc: 'Galaxy Answers 星聲工作室活動報名',
+                  submissionId: payload.id,
+                }),
+              });
+      
+              if (!response.ok) {
+                const errorText = await response.text();
+                console.error('建立綠界訂單失敗:', errorText);
+                alert('付款頁面建立失敗，請稍後再試。');
+                return;
+              }
+      
+              // 後端會回傳一個自動送往綠界的 HTML
+              const html = await response.text();
+      
+              // 先讓使用者看到確認訊息，停留 5 秒
+              let countdown = 5;
+      
+              const overlay = document.createElement('div');
+              overlay.id = 'ecpay-loading-overlay';
+              overlay.style.cssText = `
+                position: fixed;
+                inset: 0;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #0b1d26;
+                color: white;
+                text-align: center;
+                padding: 24px;
+                font-family: "Noto Sans TC", sans-serif;
+              `;
+      
+              overlay.innerHTML = `
+                <div style="width: 100%; max-width: 520px;">
+                  <div style="
+                    font-size: 32px;
+                    color: #d28b4c;
+                    margin-bottom: 20px;
+                  ">✦</div>
+      
+                  <h1 style="
+                    font-family: "Noto Serif TC", serif;
+                    font-size: 28px;
+                    font-weight: 600;
+                    letter-spacing: 0.08em;
+                    margin-bottom: 16px;
+                  ">
+                    報名資料已送出
+                  </h1>
+      
+                  <p style="
+                    font-size: 16px;
+                    line-height: 1.9;
+                    color: rgba(255,255,255,0.8);
+                    margin-bottom: 24px;
+                  ">
+                    正在為你準備付款頁面<br />
+                    請稍候
+                  </p>
+      
+                  <div id="ecpay-countdown" style="
+                    font-size: 42px;
+                    font-weight: 600;
+                    color: #f4d03f;
+                    line-height: 1;
+                    margin-bottom: 12px;
+                  ">
+                    ${countdown}
+                  </div>
+      
+                  <p style="
+                    font-size: 13px;
+                    color: rgba(255,255,255,0.5);
+                  ">
+                    即將前往綠界付款
+                  </p>
+                </div>
+              `;
+      
+              document.body.appendChild(overlay);
+      
+              const countdownElement = document.getElementById('ecpay-countdown');
+      
+              const timer = window.setInterval(() => {
+                countdown -= 1;
+      
+                if (countdownElement) {
+                  countdownElement.textContent = String(countdown);
+                }
+      
+                if (countdown <= 0) {
+                  window.clearInterval(timer);
+      
+                  // 5 秒後才前往綠界
+                  document.open();
+                  document.write(html);
+                  document.close();
+                }
+              }, 1000);
+            } catch (error) {
+              console.error('Tally → ECPay 串接錯誤:', error);
+              alert('付款頁面建立失敗，請稍後再試。');
+            }
+          };
+      
+          window.addEventListener('message', handleTallySubmit);
+      
+          return () => {
+            window.removeEventListener('message', handleTallySubmit);
+          };
+        }, []);
   const [openInfoIndex, setOpenInfoIndex] = useState<number | null>(0);
 
   const toggleInfo = (index: number) => {
@@ -79,7 +240,7 @@ export const EventRegisterPage: React.FC<EventRegisterPageProps> = ({ onNavigate
           {/* 系列名稱與行星 */}
               <div className="space-y-3">
                 <h2 className="fluid-title-h2 font-bold text-[#f4d03f] serif-font">
-                  【人生星方向系列一】
+                  【人生星方向系列二】
                 </h2>
               
                 <p className="text-base sm:text-lg md:text-xl font-semibold text-slate-100 flex items-center justify-center gap-3">
@@ -91,15 +252,15 @@ export const EventRegisterPage: React.FC<EventRegisterPageProps> = ({ onNavigate
                   <span className="text-slate-400">、</span>
               
                   <span className="flex items-center gap-1.5">
-                    <span className="text-[#9aaabd] text-2xl leading-none">☽</span>
-                    月亮
+                    <span className="text-[#9aaabd] text-2xl leading-none">☿</span>
+                    水星
                   </span>
               
                   <span className="text-slate-400">、</span>
               
                   <span className="flex items-center gap-1.5">
-                    <span className="text-[#f08a3c] text-2xl leading-none">♀</span>
-                    金星
+                    <span className="text-[#f08a3c] text-2xl leading-none">♃</span>
+                    木星
                   </span>
                 </p>
               </div>
@@ -107,8 +268,8 @@ export const EventRegisterPage: React.FC<EventRegisterPageProps> = ({ onNavigate
           {/* 主題 */}
           <div className="pt-1.5 pb-2.5 border-t border-b border-white/10 max-w-xl mx-auto px-1">
             <h1 className="fluid-title-h1 font-bold text-white serif-font tracking-normal sm:tracking-wide">
-              <span className="title-phrase">告別盲從焦慮，</span>
-              <span className="title-phrase text-[#d28b4c]">站上天賦舞台</span>
+              <span className="title-phrase">突破表達無力感，</span>
+              <span className="title-phrase text-[#d28b4c]">發揮社群影響力</span>
             </h1>
           </div>
 
@@ -119,7 +280,7 @@ export const EventRegisterPage: React.FC<EventRegisterPageProps> = ({ onNavigate
           
               {/* 時間 */}
               <div className="min-w-0 max-w-full text-center">
-                <span>時間｜9/13（日）10:00–17:00</span>
+                <span>時間｜10/17（六）10:00–17:00</span>
               </div>
           
               {/* 地點 */}

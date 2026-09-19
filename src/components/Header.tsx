@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Sparkles, ArrowRight, Compass } from 'lucide-react';
+import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
 import type { PageRoute } from '../types';
 
 interface HeaderProps {
@@ -72,21 +72,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
           </button>
 
           <button
-            id="nav-link-consultation"
-            onClick={() => handleNavClick('/consultation')}
-            className={`text-sm font-medium transition-colors cursor-pointer py-1 relative flex items-center gap-1.5 ${
-              currentPath === '/consultation'
-                ? 'text-[#f4d03f] font-semibold'
-                : 'text-slate-300 hover:text-white'
-            }`}
-          >
-            <span>諮詢服務</span>
-            {currentPath === '/consultation' && (
-              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#f4d03f] rounded-full" />
-            )}
-          </button>
-
-          <button
             id="nav-link-register"
             onClick={() => handleNavClick('/register')}
             className={`px-5 py-1.5 rounded-full text-xs md:text-sm font-bold transition cursor-pointer flex items-center gap-1.5 ${
@@ -140,18 +125,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
                 <span>課程</span>
               </div>
               {(currentPath === '/course' || currentPath.startsWith('/course')) && <span className="text-[#f4d03f] text-xs">✦</span>}
-            </button>
-
-            <button
-              onClick={() => handleNavClick('/consultation')}
-              className={`text-left py-2 px-3 rounded-xl text-sm font-medium transition flex items-center justify-between cursor-pointer ${
-                currentPath === '/consultation'
-                  ? 'bg-white/10 text-[#f4d03f] font-semibold'
-                  : 'text-slate-300 hover:bg-white/5'
-              }`}
-            >
-              <span className="flex items-center gap-2"><Compass className="w-4 h-4" />諮詢服務</span>
-              {currentPath === '/consultation' && <span className="text-[#f4d03f] text-xs">✦</span>}
             </button>
 
             <button

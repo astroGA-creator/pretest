@@ -331,16 +331,16 @@ export const BrandInfoPage: React.FC<BrandInfoPageProps> = ({ onNavigate }) => {
                 <span>最新實體課程</span>
               </div>
               <h3 className="fluid-title-h3 font-bold text-white serif-font leading-tight">
-                  <span className="title-phrase">【人生星方向系列一】</span>
-                  <span className="title-phrase">太陽・月亮・金星</span>
+                  <span className="title-phrase">【人生星方向系列二】</span>
+                  <span className="title-phrase">太陽・水星・木星</span>
                 </h3>
                 
                 <p className="text-[#f4d03f] text-lg sm:text-xl font-medium serif-font">
-                  <span className="title-phrase">告別盲從焦慮，</span>
-                  <span className="title-phrase">站上天賦舞台</span>
+                  <span className="title-phrase">突破表達無力感，</span>
+                  <span className="title-phrase">發揮社群影響力</span>
                 </p>
               <p className="text-slate-300 text-xs sm:text-sm font-light max-w-xl leading-relaxed">
-                9/13（日）・實體課程<br />
+                10/17（六）・實體課程<br />
                 讓占星，成為你重新閱讀自己的開始。
               </p>
             </div>
@@ -348,7 +348,7 @@ export const BrandInfoPage: React.FC<BrandInfoPageProps> = ({ onNavigate }) => {
             <div className="flex flex-col sm:flex-row lg:flex-col gap-3 w-full lg:w-auto shrink-0 items-center sm:justify-center lg:justify-start">
               <button
                 id="brand-go-course"
-                onClick={() => onNavigate('/course')}
+                onClick={() => onNavigate('/course/series-2')}
                 className="btn-amber px-8 py-3.5 rounded-full text-sm md:text-base font-bold shadow-xl cursor-pointer flex items-center justify-center gap-2"
               >
                 <span>查看活動資訊</span>
